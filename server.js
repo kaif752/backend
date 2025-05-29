@@ -12,22 +12,21 @@ app.use(cors({ origin: 'http://localhost:3000' }));
 app.use(bodyParser.json());
 app.use('/assets', express.static('public')); // serve static files from /public
 
-// ✅ Define the MySQL connection here
-const db = mysql.createConnection({
-  host: process.env.MYSQLHOST || 'localhost',
-  user: process.env.MYSQLUSER || 'root',
-  password: process.env.MYSQLPASSWORD || '',
-  database: process.env.MYSQLDATABASE || 'your_db_name',
-  port: process.env.MYSQLPORT
+const connection = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT,
+  connectTimeout: 10000, // 10 seconds
 });
 
-// ✅ Now you can call db.connect
-db.connect((err) => {
+connection.connect((err) => {
   if (err) {
     console.error('MySQL connection error:', err);
     return;
   }
-  console.log('Connected to MySQL database ✅');
+  console.log('Connected to MySQL database!');
 });
 // Nodemailer transporter
 const transporter = nodemailer.createTransport({
