@@ -12,16 +12,14 @@ app.use(cors({ origin: 'http://localhost:3000' }));
 app.use(bodyParser.json());
 app.use('/assets', express.static('public')); // serve static files from /public
 
-const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
+const db = mysql.createConnection({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   port: process.env.DB_PORT,
-  connectTimeout: 10000, // 10 seconds
 });
 
-connection.connect((err) => {
+db.connect((err) => {
   if (err) {
     console.error('MySQL connection error:', err);
     return;
